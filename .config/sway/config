@@ -1,0 +1,199 @@
+# Logo key. Use Mod1 for Alt.
+
+set $mod Mod4
+
+# Home row direction keys, like vim
+
+set $left h
+set $down j
+set $up k
+set $right l
+
+# Terminal
+
+set $term alacritty
+
+# Launcher
+
+set $rofi_cmd rofi \
+        -terminal '$term'
+set $menu $rofi_cmd -show combi -combi-modes drun#run -modes combi
+
+### Power Managment
+
+exec swayidle -w \
+          timeout 300 'swaylock -f -c 000000' \
+          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+          before-sleep 'swaylock -f -c 000000'
+
+# Input 
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+
+   input "2:7:SynPS/2_Synaptics_TouchPad" {
+       dwt enabled
+       tap enabled
+       natural_scroll enabled
+       middle_emulation enabled
+   }
+
+input type:keyboard {
+  xkb_layout it,ru
+  xkb_options grp:caps_toggle
+}
+#
+
+# Key bindings
+#
+# Basics:
+#
+    # Start a terminal
+    bindsym --to-code $mod+Return exec alacritty
+    
+    # Make Screenshot
+    bindsym --to-code $mod+Print exec grim
+
+    # Kill focused window
+    bindsym --to-code $mod+Shift+q kill
+
+    # Start your launcher
+    bindsym --to-code $mod+d exec $menu
+
+    floating_modifier $mod normal
+
+    # Reload the configuration file
+    bindsym --to-code $mod+Shift+c reload
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+#
+# Moving around:
+#
+    # Move your focus around
+    bindsym --to-code $mod+$left focus left
+    bindsym --to-code $mod+$down focus down
+    bindsym --to-code $mod+$up focus up
+    bindsym --to-code $mod+$right focus right
+    # Or use $mod+[up|down|left|right]
+    bindsym --to-code $mod+Left focus left
+    bindsym --to-code $mod+Down focus down
+    bindsym --to-code $mod+Up focus up
+    bindsym --to-code $mod+Right focus right
+
+    # Move the focused window with the same, but add Shift
+    bindsym --to-code $mod+Shift+$left move left
+    bindsym --to-code $mod+Shift+$down move down
+    bindsym --to-code $mod+Shift+$up move up
+    bindsym --to-code $mod+Shift+$right move right
+    # Ditto, with arrow keys
+    bindsym --to-code $mod+Shift+Left move left
+    bindsym --to-code $mod+Shift+Down move down
+    bindsym --to-code $mod+Shift+Up move up
+    bindsym --to-code $mod+Shift+Right move right
+#
+# Workspaces:
+#
+    # Switch to workspace
+    bindsym --to-code $mod+1 workspace number 1
+    bindsym --to-code $mod+2 workspace number 2
+    bindsym --to-code $mod+3 workspace number 3
+    bindsym --to-code $mod+4 workspace number 4
+    bindsym --to-code $mod+5 workspace number 5
+    bindsym --to-code $mod+6 workspace number 6
+    bindsym --to-code $mod+7 workspace number 7
+    bindsym --to-code $mod+8 workspace number 8
+    bindsym --to-code $mod+9 workspace number 9
+    bindsym --to-code $mod+0 workspace number 10
+    # Move focused container to workspace
+    bindsym --to-code $mod+Shift+1 move container to workspace number 1
+    bindsym --to-code $mod+Shift+2 move container to workspace number 2
+    bindsym --to-code $mod+Shift+3 move container to workspace number 3
+    bindsym --to-code $mod+Shift+4 move container to workspace number 4
+    bindsym --to-code $mod+Shift+5 move container to workspace number 5
+    bindsym --to-code $mod+Shift+6 move container to workspace number 6
+    bindsym --to-code $mod+Shift+7 move container to workspace number 7
+    bindsym --to-code $mod+Shift+8 move container to workspace number 8
+    bindsym --to-code $mod+Shift+9 move container to workspace number 9
+    bindsym --to-code $mod+Shift+0 move container to workspace number 10
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.
+#
+# Layout stuff:
+#
+    # Switch the current container between different layout styles
+    bindsym --to-code $mod+s layout stacking
+    bindsym --to-code $mod+w layout tabbed
+    bindsym --to-code $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym --to-code $mod+f fullscreen
+    
+    # Toggle the current focus between tiling and floating mode
+    bindsym --to-code $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym --to-code $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym --to-code $mod+a focus parent
+
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym --to-code $left resize shrink width 10px
+    bindsym --to-code $down resize grow height 10px
+    bindsym --to-code $up resize shrink height 10px
+    bindsym --to-code $right resize grow width 10px
+
+    # Ditto, with arrow keys
+    bindsym --to-code Left resize shrink width 10px
+    bindsym --to-code Down resize grow height 10px
+    bindsym --to-code Up resize shrink height 10px
+    bindsym --to-code Right resize grow width 10px
+
+    # Return to default mode
+    bindsym --to-code Return mode "default"
+    bindsym --to-code Escape mode "default"    
+}
+bindsym --to-code $mod+r mode "resize"
+
+#
+# PERSONAL SETTINGS
+#
+  #Volume control
+  
+    bindsym --to-code XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+    bindsym --to-code XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+    bindsym --to-code XF86AudioMute exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ toggle
+
+  # A 10-pixel border around every window.
+  gaps inner 5
+
+  # Removes the title bar of each window.
+  default_border pixel 3
+  
+  # Wallpapers
+
+    output * bg /home/platon/Изображения/topwall/background.png fill
+  
+  #Random Wallpaper
+  
+  #exec_always setwall random /home/platon/Изображения/topwall -c sway
+  
+  #Browser
+  
+    bindsym --to-code $mod+q exec flatpak run ru.yandex.Browser
+  
+  #Bitwarden
+    
+    bindsym --to-code $mod+c exec flatpak run com.bitwarden.desktop
+
+bar {
+    swaybar_command waybar
+}
+
+include /etc/sway/config.d/*

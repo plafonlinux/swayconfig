@@ -1,0 +1,244 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 30,
+    "modules-left": ["custom/menu", "sway/workspaces", "sway/window"],
+    "modules-center": ["custom/wf-recorder", "sway/mode"],
+    "modules-right": [
+        "custom/wlsunset",
+        "custom/playerctl",
+        "custom/scratchpad",
+        "idle_inhibitor",
+        "sway/language",
+        "cpu",
+        "memory",
+        "battery",
+        "network",
+        "bluetooth",
+        "pulseaudio",
+        "clock",
+        "custom/power",
+        "tray"
+    ],
+    
+    "sway/workspaces": {
+         "disable-scroll": true,
+         "all-outputs": true
+    },
+    
+    "sway/language": {
+        "format": " {}",
+        "min-length": 5,
+        "tooltip": false,
+        "on-click": "swaymsg input $(swaymsg -t get_inputs --raw | jq '[.[] | select(.type == \"keyboard\")][0] | .identifier') xkb_switch_layout next"
+
+    },
+
+    "custom/menu": {
+        "format": "",
+        "on-click": "exec alacritty",
+        "tooltip": false
+    },
+    
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>",
+        "tooltip": false
+    },
+    
+    "sway/window": {
+        "format": "{}",
+        "max-length": 50,
+        "tooltip": true
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        },
+        "tooltip": true,
+        "tooltip-format-activated": "Caffeine on",
+        "tooltip-format-deactivated": "Caffein off"
+    },
+
+    "pulseaudio": {
+       "format": "{icon}  {volume}% {format_source}",
+       "format-bluetooth": "{icon} {volume}%",
+       "format-muted": " {format_source}",
+       "format-source": "  {volume}%",
+       "format-source-muted": "",
+       "format-icons": {
+           "headphone": "",
+           "headset": "",
+           "default": ["", "", ""]
+       },
+       "tooltip-format": "{icon}  {volume}% {format_source}",
+       "on-click": "swaymsg exec \\$pavucontrol",
+       "on-click-middle": "swaymsg exec \\$volume_mute",
+       "on-click-right": "swaymsg exec pavucontrol",
+       "on-scroll-up": "swaymsg exec \\$volume_up",
+       "on-scroll-down": "swaymsg exec \\$volume_down"
+       
+    },
+    
+    "battery": {
+        "format": "{icon} {capacity}%",
+        "format-icons": ["", "", "", "", ""]
+    },
+    
+    "network": {
+       "format-wifi": " ({signalStrength}%)",
+       "format-ethernet": "",
+       "format-disconnected": "",
+       "tooltip-format": "{ifname} ({essid}): {ipaddr}",
+       "on-click": "swaymsg exec \\$term nmtui"
+    },
+
+    "bluetooth": {
+        "format": "",
+        "format-disabled": "",
+        "on-click": "swaymsg exec \\$rofi_bluetooth",
+        "on-click-right": "rfkill toggle bluetooth",
+        "tooltip-format": "{}"
+    },
+    
+    "clock": {
+        "format": "{:%e %b %H:%M}",
+        "tooltip": true,
+        "tooltip-format": "{:%d.%m.%Y %H:%M}",
+        "interval": 5,
+        "on-click": "swaymsg exec \\$calendar"
+    },
+    
+    "cpu": {
+        "interval": 5,
+        "format": " {usage}%",
+        "states": {
+          "warning": 70,
+          "critical": 90
+          },
+    "on-click": "htop"
+    },
+    
+    "memory": {
+        "interval": 30,
+        "format": " {}%",
+        "states": {
+          "warning": 70,
+          "critical": 90
+        },
+    "on-click": "htop"
+    
+    },
+    
+    "custom/wf-recorder": {
+         "interval": "once",
+         "return-type": "json",
+         "format": "{}",
+         "tooltip-format": "{tooltip}",
+         "exec": "echo '{\"class\": \"recording\",\"text\":\"\",\"tooltip\":\"press $mod+Esc to stop recording\"}'",
+         "exec-if": "pgrep wf-recorder",
+         "on-click": "killall -s SIGINT wf-recorder",
+         "signal": 8
+    },
+
+    "custom/playerctl": {
+        "interval": "once",
+        "tooltip": true,
+        "return-type": "json",
+        "format": "{icon}",
+        "format-icons": {
+            "Playing": "",
+            "Paused": ""
+        },
+        "exec": "playerctl metadata --format '{\"alt\": \"{{status}}\", \"tooltip\": \"{{playerName}}:  {{markup_escape(title)}} - {{markup_escape(artist)}}\" }'",
+        "on-click": "playerctl play-pause; pkill -RTMIN+5 waybar",
+        "on-click-right": "playerctl next; pkill -RTMIN+5 waybar",
+        "on-scroll-up": "playerctl position 10+; pkill -RTMIN+5 waybar",
+        "on-scroll-down": "playerctl position 10-; pkill -RTMIN+5 waybar",
+        "signal": 5
+    },
+
+    "custom/power": {
+        "format": "",
+        "on-click": "nwg-bar -x"
+    },
+
+    "custom/dnd": {
+        "interval": "once",
+        "return-type": "json",
+        "format": "{}{icon}",
+        "format-icons": {
+            "default": "",
+            "dnd": ""
+        },
+        "on-click": "makoctl mode | grep 'do-not-disturb' && makoctl mode -r do-not-disturb || makoctl mode -a do-not-disturb; pkill -RTMIN+11 waybar",
+        "exec": "printf '{\"alt\":\"%s\",\"tooltip\":\"Notification mode: %s\"}' $(makoctl mode | grep -q 'do-not-disturb' && echo dnd || echo default) $(makoctl mode | tail -1)",
+        "signal": 11
+    },
+    
+    "custom/weather": {
+        "icon-size": 42,
+        "format": "{icon} {}",
+        "tooltip": true,
+        "interval": 3600,
+        "exec": "/home/platon/.config/sway/scripts/weather.py",
+        "return-type": "json",
+        "format-icons": {
+           "Unknown": "✨",
+           "Cloudy": "",
+           "Fog": "🌫",
+           "HeavyRain": "🌧",
+           "HeavyShowers": "🌧",
+           "HeavySnow": "❄️",
+           "HeavySnowShowers": "❄️",
+           "LightRain": "🌦",
+           "LightShowers": "🌦",
+           "LightSleet": "🌧",
+           "LightSleetShowers": "🌧",
+           "LightSnow": "🌨",
+           "LightSnowShowers": "🌨",
+           "PartlyCloudy": "⛅️",
+           "Sunny": "☀️",
+           "ThunderyHeavyRain": "🌩",
+           "ThunderyShowers": "⛈",
+           "ThunderySnowShowers": "⛈",
+           "VeryCloudy": ""
+        }
+    },
+
+    "custom/wlsunset": {
+        "interval": "once",
+        "tooltip": true,
+        "tooltip-format": "{tooltip}",
+        "return-type": "json",
+        "format": "{icon}",
+        "format-icons": {
+            "on": "",
+            "off": ""
+        },
+        "exec": "fallback_latitude=50.1 fallback_longitude=8.7 latitude= longitude= /usr/share/sway/scripts/sunset.sh",
+        "on-click": "/usr/share/sway/scripts/sunset.sh toggle; pkill -RTMIN+6 waybar",
+        "exec-if": "/usr/share/sway/scripts/sunset.sh check",
+        "signal": 6
+    },
+
+    "custom/scratchpad": {
+        "interval": "once",
+        "return-type": "json",
+        "format": "{icon}",
+        "format-icons": {
+            "one": "",
+            "many": ""
+        },
+        "exec": "/home/platon/.config/sway/scripts/scratchpad.sh; pkill -RTMIN+7 waybar",
+        "on-click": "swaymsg 'scratchpad show'",
+        "signal": 7
+    },
+    
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10
+    }
+}

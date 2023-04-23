@@ -1,0 +1,241 @@
+@keyframes blink-warning {
+    70% {
+        color: @wm_icon_bg;
+    }
+
+    to {
+        color: @wm_icon_bg;
+        background-color: @warning_color;
+    }
+}
+
+@keyframes blink-critical {
+    70% {
+        color: @wm_icon_bg;
+    }
+
+    to {
+        color: @wm_icon_bg;
+        background-color: @error_color;
+    }
+}
+
+/* Reset all styles */
+* {
+    border: none;
+    border-radius: 4;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* The whole bar */
+#waybar {
+    background: @theme_bg_color;
+    color: @theme_fg_color;
+    font-family: "Ubuntu", "Font Awesome 6 Free", "Font Awesome";
+    font-size: 14px;
+}
+
+#window {
+    margin-left: 10px;
+}
+
+window#waybar {
+    margin-left: 10px;
+    border-radius: 0;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces button {
+    /* To compensate for the top border and still have vertical centering */
+    padding: 0 0.5em;
+    margin: 4px 3px;
+    color: @wm_icon_bg;
+}
+
+#workspaces button.focused {
+    border-color: @theme_selected_bg_color;
+    color: @wm_icon_bg;
+    background-color: @theme_selected_bg_color;
+}
+
+#workspaces button.urgent {
+    border-color: @error_color;
+    color: @error_color;
+}
+
+#mode {
+    background: @background_color;
+}
+
+#clock,
+#custom-playerctl,
+#custom-power,
+#custom-scratchpad,
+#custom-weather,
+#custom-wlsunset,
+#custom-clipboard,
+#custom-menu,
+#custom-dnd,
+#battery,
+#cpu,
+#language,
+#memory,
+#network,
+#bluetooth,
+#pulseaudio,
+#tray,
+#mode,
+#idle_inhibitor {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 4px 3px;
+    color: #333333;
+}
+
+#clock {
+    background-color: #bbccdd;
+}
+
+#custom-weather {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#custom-wlsunset {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#custom-playerctl {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#custom-power {
+    background: #F70529;
+    color: #FFFFFF;
+}
+
+#custom-scratchpad {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#custom-clipboard {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#custom-menu {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#custom-dnd {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#battery {
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    background: #101112;
+    color: #FFFFFF;
+}
+
+#battery.warning {
+    color: #F70529;
+}
+
+#battery.critical {
+    color: #F70529;
+}
+
+#battery.warning.discharging {
+    animation-name: blink-warning;
+    animation-duration: 3s;
+}
+
+#battery.critical.discharging {
+    animation-name: blink-critical;
+    animation-duration: 2s;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#cpu {
+    background: #8C00FF;
+    color: #FFFFFF;
+}
+
+#language {
+    background: #FFBB00;
+    color: #333333;
+}
+
+#memory {
+    background: #8C00FF;
+    color: #FFFFFF;
+}
+
+#custom-gpu-usage {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#network {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#bluetooth {
+    background: @theme_selected_bg_color;
+    color: @theme_selected_fg_color;
+}
+
+#bluetooth.disabled {
+    background: @theme_bg_color;
+    color: @wm_icon_bg;
+}
+
+#network.disconnected {
+    background: #F70529;
+    color: #FFFFFF;
+}
+
+#pulseaudio {
+    background-color: #bbccdd;
+}
+
+#pulseaudio.muted {
+    background: #F70529;
+    color: #FFFFFF;
+}
+
+#custom-wf-recorder {
+    color: @error_color;
+    padding-right: 10px;
+}
+
+#tray {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#idle_inhibitor {
+    background-color: #bbccdd;
+    color: #333333;
+}
+
+#idle_inhibitor.activated {
+    background: #10C756;
+    color: #FFFFFF;
+}
