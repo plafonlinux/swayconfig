@@ -16,5 +16,5 @@
 
 Спонсорство на YouTube: https://bit.ly/3MHNzWa 
 
-Заказать рекламу в Телеграме: https://t.me/plafonyoutube
+Заказать рекламу в Телеграме: https://t.me/plafonyoutube | По вопросам рекламы: <a href="https://t.me/Toxblh">Aнтон</a> 
 
